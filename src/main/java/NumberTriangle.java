@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is the provided NumberTriangle class to be used in this coding task.
@@ -104,31 +106,40 @@ public class NumberTriangle {
      * @throws IOException may naturally occur if an issue reading the file occurs
      */
     public static NumberTriangle loadTriangle(String fname) throws IOException {
-        // open the file and get a BufferedReader object whose methods
-        // are more convenient to work with when reading the file contents.
         InputStream inputStream = NumberTriangle.class.getClassLoader().getResourceAsStream(fname);
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
+        String line =  br.readLine();
 
-        // TODO define any variables that you want to use to store things
+        ArrayList<NumberTriangle> prevRow = new ArrayList<>();
+        for (String s: line.trim().split("\\s+")) {
+            prevRow.add(new NumberTriangle(Integer.parseInt(s)));
+        }
 
-        // will need to return the top of the NumberTriangle,
-        // so might want a variable for that.
-        NumberTriangle top = null;
+        NumberTriangle root = prevRow.get(0);
 
-        String line = br.readLine();
+        line = br.readLine();
+
         while (line != null) {
 
-            // remove when done; this line is included so running starter code prints the contents of the file
-            System.out.println(line);
+            ArrayList<NumberTriangle> currentRow = new ArrayList<>();
 
-            // TODO process the line
+            for (String s: line.trim().split("\\s+")){
+                currentRow.add(new NumberTriangle(Integer.parseInt(s)));
+            }
+
+            for (int i = 0; i < prevRow.size(); i++) {
+                prevRow.get(i).setLeft(currentRow.get(i));
+                prevRow.get(i).setRight(currentRow.get(i + 1));
+            }
 
             //read the next line
             line = br.readLine();
+            prevRow = currentRow;
         }
+
         br.close();
-        return top;
+        return root;
     }
 
     public static void main(String[] args) throws IOException {
