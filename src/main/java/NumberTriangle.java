@@ -106,8 +106,6 @@ public class NumberTriangle {
      * @throws IOException may naturally occur if an issue reading the file occurs
      */
     public static NumberTriangle loadTriangle(String fname) throws IOException {
-        // open the file and get a BufferedReader object whose methods
-        // are more convenient to work with when reading the file contents.
         InputStream inputStream = NumberTriangle.class.getClassLoader().getResourceAsStream(fname);
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -139,6 +137,7 @@ public class NumberTriangle {
             line = br.readLine();
             prevRow = currentRow;
         }
+
         br.close();
         return root;
     }
